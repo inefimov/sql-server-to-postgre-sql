@@ -1,0 +1,75 @@
+# User files
+*.rsuser
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.userprefs
+
+ 
+# Build results
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+[Bb]in/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Ll]og/
+[Ll]ogs/
+[Oo]bj/
+[Rr]elease/
+[Rr]eleases/
+[Ww][Ii][Nn]32/
+bld/
+dist/
+mono_crash.*
+x64/
+x86/
+ 
+# Visual Studio
+.vs/
+Generated\ Files/ 
+ 
+# MSTest
+[Bb]uild[Ll]og.*
+[Tt]est[Rr]esult*/
+
+# JetBrains
+.idea_modules/
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.history
+.ionide
+.vscode/
+*.vsix
+
+# Logs
+logs
+
+# Thash
+._*
+appsettings.Development.json
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
+.DocumentRevisions-V100
+.DS_Store
+.fseventsd
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+[Dd]esktop.ini
+*.lnk
+*.stackdump
+$RECYCLE.BIN/
+ehthumbs_vista.db
+ehthumbs.db
+Network Trash Folder
+Temporary Items
+Thumbs.db
+Thumbs.db:encryptable
