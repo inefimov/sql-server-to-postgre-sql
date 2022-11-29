@@ -42,6 +42,7 @@ public class CopyRowsTask : IWorkerTask
 
 	private async Task CopyTableRows(string tableName)
 	{
+		var batchSize = _service.SqlServerConfig.BatchSize ?? Props.BatchSize;
 		var startOffsetLimit = await GetStartOffsetLimit(tableName);
 		var orderBy = await GetOrderBy(tableName);
 		var pageIndex = 1;
@@ -58,15 +59,16 @@ public class CopyRowsTask : IWorkerTask
 
 			await PutTableRows(tableName, rows);
 
-			if (rows.Length < Props.PageSize)
+			if (rows.Length < batchSize)
 				break;
 		}
 	}
 
 	private async Task<IEnumerable<IDictionary<string, object?>>> GetTableRows(string tableName, string orderBy, int pageIndex, StartOffsetLimit? startOffsetLimit)
 	{
-		var offset = (pageIndex - 1) * Props.PageSize;
-		var limit = Props.PageSize;
+		var batchSize = _service.SqlServerConfig.BatchSize ?? Props.BatchSize;
+		var offset = (pageIndex - 1) * batchSize;
+		var limit = batchSize;
 
 		if (startOffsetLimit != null)
 		{
@@ -78,7 +80,7 @@ public class CopyRowsTask : IWorkerTask
 		var tableCatalog = _service.SqlServerConfig.Database;
 		var schemeTable = $@"""{tableSchema}"".""{tableName}""";
 
-		_logger.LogDebug(Props.SpaceMs + "Trying get next {Offset} rows from table `{Schema}.{Catalog}.{Table}`...", offset, tableSchema, tableCatalog, tableName);
+		_logger.LogDebug(Props.SpaceMs + "Trying get rows starts at {offset} from table `{Schema}.{Catalog}.{Table}`...", offset, tableSchema, tableCatalog, tableName);
 
 		var sql = $@"
 select
@@ -174,6 +176,7 @@ order by
 
 	private async Task<StartOffsetLimit?> GetStartOffsetLimit(string tableName)
 	{
+		var batchSize = _service.SqlServerConfig.BatchSize ?? Props.BatchSize;
 		var tableSchema = _service.PostgreSqlConfig.Scheme;
 		var tableCatalog = _service.PostgreSqlConfig.Database;
 		var schemeTable = $@"""{tableSchema}"".""{tableName}""";
@@ -189,27 +192,12 @@ order by
 			return null;
 		}
 
-		var nextPageIndex = (int)Math.Ceiling(offset / (double)Props.PageSize) + (offset % Props.PageSize == 0 ? 1 : 0);
-		var limit = nextPageIndex * Props.PageSize - offset;
+		var nextPageIndex = (int)Math.Ceiling(offset / (double)batchSize) + (offset % batchSize == 0 ? 1 : 0);
+		var limit = nextPageIndex * batchSize - offset;
 
 		_logger.LogDebug(Props.SpacePg + "Copy rows starts with offset {Offset} and limit {Limit} in table `{Schema}.{Catalog}.{Table}`", offset, limit, tableSchema, tableCatalog, tableName);
 
 		return StartOffsetLimit.From(offset, limit, nextPageIndex);
-	}
-
-	[Obsolete("Anymore not used.")]
-	private async Task ClearTable(string tableName)
-	{
-		var tableSchema = _service.PostgreSqlConfig.Scheme;
-		var tableCatalog = _service.PostgreSqlConfig.Database;
-		var schemeTable = $@"""{tableSchema}"".""{tableName}""";
-
-		_logger.LogDebug(Props.SpacePg + "Trying clear table `{Schema}.{Catalog}.{Table}`...", tableSchema, tableCatalog, tableName);
-
-		using var connection = await _service.PostgreSqlConnectionFactory.OpenAsync();
-		await connection.ExecuteAsync($"delete from {schemeTable}", commandTimeout: Props.CommandTimeout);
-
-		_logger.LogDebug(Props.SpacePg + "Table `{Schema}.{Catalog}.{Table}` cleared successfully", tableSchema, tableCatalog, tableName);
 	}
 
 	private static string From(object? value)

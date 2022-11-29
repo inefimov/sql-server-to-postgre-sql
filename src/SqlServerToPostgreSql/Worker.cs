@@ -8,7 +8,7 @@ public static class Props
 {
 	public const int CommandTimeout = 18000;
 
-	public const int PageSize = 10000;
+	public const int BatchSize = 10000;
 
 	public const int InsertPageSize = 1000;
 

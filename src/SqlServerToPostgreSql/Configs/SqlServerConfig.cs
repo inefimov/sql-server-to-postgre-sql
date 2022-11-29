@@ -7,4 +7,6 @@ public class SqlServerConfig
 	public string Database { get; set; } = "";
 
 	public string Scheme { get; set; } = "";
+
+	public int? BatchSize { get; set; }
 }

@@ -26,6 +26,7 @@ Description of `appsettings.json`:
 | SqlServer.SuperUser              | The name of the super database user.                                                  |
 | SqlServer.Database               | The name of the database.                                                             |
 | SqlServer.Scheme                 | The name of the database schema.                                                      |
+| SqlServer.BatchSize              | The number of rows to be selected from the database table at a time.                  |
 |                                  |                                                                                       |
 | PostgreSql.SuperUser             | The name of the super database user.                                                  |
 | PostgreSql.Database              | The name of the database.                                                             |
