@@ -9,7 +9,7 @@ Console application for migration from **SQL Server** to **PostgreSQL**.
 create database postgres_db;
 ```
 2. Edit the settings in the `appsettings.json` file.
-2. Launch the console application:
+3. Launch the console application:
 ```shell
 dotnet path/to/SqlServerToPostgreSql.dll
 ```

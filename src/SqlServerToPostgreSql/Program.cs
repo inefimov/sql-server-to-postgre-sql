@@ -26,6 +26,7 @@ await App.New(args).RunOneTimeWorker<Worker>(container =>
 		typeof(CreateTablePrimaryKeysTask),
 		typeof(CreateTableUniqueKeysTask),
 		typeof(CreateTableForeignKeysTask),
-		typeof(CreateTableIndexesTask)
+		typeof(CreateTableIndexesTask),
+		typeof(CreateRolesTask),
 	});
 });

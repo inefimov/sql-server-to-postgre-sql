@@ -11,4 +11,6 @@ public class TasksPlanConfig
 	public bool CreateTableIndexes { get; set; }
 
 	public bool CopyRows { get; set; }
+
+	public bool CreateRoles { get; set; }
 }

@@ -11,4 +11,6 @@ public class PostgreSqlConfig : IConnectionConfig
 	public IEnumerable<string>? IncludeTables { get; set; }
 
 	public IEnumerable<string>? ExcludeTables { get; set; }
+
+	public Dictionary<string, string>? Roles { get; set; }
 }
